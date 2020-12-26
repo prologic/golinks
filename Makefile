@@ -2,6 +2,7 @@
 
 CGO_ENABLED=0
 COMMIT=`git rev-parse --short HEAD`
+VERSION=`git describe --abbrev=0 --tags`
 APP=golinks
 REPO?=prologic/$(APP)
 TAG?=latest
@@ -20,7 +21,7 @@ deps:
 build: clean deps
 	@echo " -> Building $(TAG)$(BUILD)"
 	@go build -tags "netgo static_build" -installsuffix netgo \
-		-ldflags "-w -X github.com/$(REPO).GitCommit=$(COMMIT) -X github.com/$(REPO).Build=$(BUILD)" .
+		-ldflags "-s -w -X main.Commit=$(COMMIT) -X main.Version=${VERSION}" .
 	@echo "Built $$(./$(APP) -v)"
 
 image:
